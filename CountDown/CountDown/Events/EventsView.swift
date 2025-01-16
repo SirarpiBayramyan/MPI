@@ -9,12 +9,9 @@ import SwiftUI
 
 struct EventsView: View {
 
-    @Binding var selectedTab: Int
+    @EnvironmentObject var tabState: TabState // Access environment object
     @StateObject var viewModel = EventsViewModel()
 
-    init(selectedTab: Binding<Int>) {
-        self._selectedTab = selectedTab
-    }
 
     var body: some View {
         if viewModel.events.isEmpty {
@@ -32,7 +29,7 @@ struct EventsView: View {
             Spacer()
             Button {
                 print("Create")
-                selectedTab = 1
+                tabState.selectedTab = 1
             } label: {
                 Text("Create")
                     .font(.footnote)
@@ -71,5 +68,5 @@ struct EventsView: View {
 }
 
 #Preview {
-    EventsView(selectedTab: .constant(1))
+    EventsView()
 }

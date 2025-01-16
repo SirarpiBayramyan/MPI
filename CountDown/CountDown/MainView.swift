@@ -7,26 +7,30 @@
 
 import SwiftUI
 
+class TabState: ObservableObject {
+    @Published var selectedTab: Int = 0
+}
+
 struct MainView: View {
 
-    @State private var selectedTab = 0
+    @StateObject private var tabState = TabState()
 
     var body: some View {
-        TabView {
-            EventsView(selectedTab: $selectedTab)
+        TabView(selection: $tabState.selectedTab) {
+            EventsView()
                 .tabItem {
                     Label("Eventes", systemImage: "list.bullet.clipboard")
                 }
                 .tag(0)
 
-            CreateEventView(selectedTab: $selectedTab)
+            CreateEventView()
                 .tabItem {
                     Label("Create", systemImage: "plus")
                 }
                 .tag(1)
 
-
         }
+        .environmentObject(tabState)
 
     }
 }

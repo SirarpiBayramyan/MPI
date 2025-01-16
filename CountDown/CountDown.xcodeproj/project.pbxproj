@@ -21,6 +21,7 @@
 		8D700F3E2D393EFD00CCE9D4 /* CalendarEventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D700F3D2D393EFD00CCE9D4 /* CalendarEventService.swift */; };
 		8D700F412D397CCC00CCE9D4 /* EventsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D700F402D397CCC00CCE9D4 /* EventsViewModel.swift */; };
 		8D700F462D39879D00CCE9D4 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D700F452D39879D00CCE9D4 /* Event.swift */; };
+		8D700F482D398C9700CCE9D4 /* SeeEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D700F472D398C9700CCE9D4 /* SeeEventView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		8D700F3D2D393EFD00CCE9D4 /* CalendarEventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventService.swift; sourceTree = "<group>"; };
 		8D700F402D397CCC00CCE9D4 /* EventsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewModel.swift; sourceTree = "<group>"; };
 		8D700F452D39879D00CCE9D4 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		8D700F472D398C9700CCE9D4 /* SeeEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeEventView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				8D700F0A2D392A3000CCE9D4 /* CountDownApp.swift */,
 				8D700F0C2D392A3000CCE9D4 /* ContentView.swift */,
 				8D700F3D2D393EFD00CCE9D4 /* CalendarEventService.swift */,
+				8D700F472D398C9700CCE9D4 /* SeeEventView.swift */,
 				8D700F342D39301F00CCE9D4 /* MainView.swift */,
 				8D700F422D39871900CCE9D4 /* Data */,
 				8D700F3F2D397C9A00CCE9D4 /* Events */,
@@ -305,6 +308,7 @@
 				8D700F3C2D393C2F00CCE9D4 /* CreateNewEventViewModel.swift in Sources */,
 				8D700F462D39879D00CCE9D4 /* Event.swift in Sources */,
 				8D700F412D397CCC00CCE9D4 /* EventsViewModel.swift in Sources */,
+				8D700F482D398C9700CCE9D4 /* SeeEventView.swift in Sources */,
 				8D700F0D2D392A3000CCE9D4 /* ContentView.swift in Sources */,
 				8D700F372D39303E00CCE9D4 /* CreateEventView.swift in Sources */,
 				8D700F352D39301F00CCE9D4 /* MainView.swift in Sources */,

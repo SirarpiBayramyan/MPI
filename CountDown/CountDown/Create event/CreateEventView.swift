@@ -8,87 +8,90 @@
 import SwiftUI
 
 struct CreateEventView: View {
-
-    @Binding var selectedTab: Int
+    @EnvironmentObject var tabState: TabState 
     @State private var showAlert = false
     @State private var alertMessage = ""
-    @StateObject private var viewModel = CreateNewEventViewModel()
+    @ObservedObject private var viewModel = CreateNewEventViewModel()
+    @State private var navigateToSeeEvents = false // State for navigation
 
-    init(selectedTab: Binding<Int>) {
-        self._selectedTab = selectedTab
-    }
 
     var body: some View {
-        VStack(spacing: 16){
-            HStack {
-                Text("New Event")
-                    .font(.title)
-                    .bold()
-                Spacer()
-            }
-
-            ZStack {
-                Circle()
-                    .fill(.blue)
-                    .opacity(0.35)
-                Text(viewModel.emojy)
-                    .font(.system(size: 100))
-            }
-
-            HStack {
-                Text("Event Name:")
-                Spacer()
-                TextField("name", text: $viewModel.name)
-                    .padding(.horizontal)
-                    .textFieldStyle(.roundedBorder)
-            }
-
-            HStack {
-                Text("Emoji :")
-                Spacer()
-                TextField(viewModel.emojy, text: $viewModel.emojy)
-                    .padding(.horizontal)
-                    .textFieldStyle(.roundedBorder)
-
-            }
-
-            HStack {
-                DatePicker("Event Date", selection: $viewModel.date)
-            }
-
-            Spacer()
-
-            Button(action: {
-                print("save")
-                viewModel.saveEvent(alertMessage: $alertMessage, showAlert: $showAlert)
-                if alertMessage == "Event created successfully!" {
-                    selectedTab = 0// Navigate to the desired tab
+        NavigationStack {
+            VStack(spacing: 16) {
+                HStack {
+                    Text("New Event")
+                        .font(.title)
+                        .bold()
+                    Spacer()
                 }
-            }, label: {
-                Text("Save")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
-            })
 
-            Spacer()
+                ZStack {
+                    Circle()
+                        .fill(.blue)
+                        .opacity(0.35)
+                    Text(viewModel.emojy)
+                        .font(.system(size: 100))
+                }
 
+                HStack {
+                    Text("Event Name:")
+                    Spacer()
+                    TextField("name", text: $viewModel.name)
+                        .padding(.horizontal)
+                        .textFieldStyle(.roundedBorder)
+                }
+
+                HStack {
+                    Text("Emoji :")
+                    Spacer()
+                    TextField(viewModel.emojy, text: $viewModel.emojy)
+                        .padding(.horizontal)
+                        .textFieldStyle(.roundedBorder)
+                }
+
+                HStack {
+                    DatePicker("Event Date", selection: $viewModel.date)
+                }
+
+                Spacer()
+
+                Button(action: {
+                    viewModel.saveEvent(alertMessage: $alertMessage, showAlert: $showAlert)
+                    //if alertMessage == "Event created successfully!" {
+                        DispatchQueue.main.async {
+                            navigateToSeeEvents = true // Navigate to SeeEventView
+
+                        }
+
+                }, label: {
+                    Text("Save")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                })
+                .disabled(viewModel.isSaveDisabled)
+// TODO: Add notes
+                Spacer()
+            }
+            .padding()
+            .navigationDestination(isPresented: $navigateToSeeEvents) {
+                SeeEventView(viewModel: viewModel)
+            }
         }
-        .navigationTitle("event")
-        .navigationBarTitleDisplayMode(.large)
-        .padding()
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Calendar Access"),
-                  message: Text(alertMessage),
-                  dismissButton: .default(Text("OK")))
+            Alert(
+                title: Text("Event Status"),
+                message: Text(alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
-
     }
 }
 
+
 #Preview {
-    CreateEventView(selectedTab: .constant(1))
+    CreateEventView()
 }
