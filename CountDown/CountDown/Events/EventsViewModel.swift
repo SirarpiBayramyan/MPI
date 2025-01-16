@@ -9,7 +9,8 @@ import Foundation
 
 class EventsViewModel: ObservableObject {
 
-    @Published var events: [Event] = [] 
+    @Published var events: [Event] = []
+    
 
     var service = UserDefaultsEventStorageService()
     init() {
@@ -22,6 +23,8 @@ class EventsViewModel: ObservableObject {
         service.fetchEvents()
 
     }
+
+
 
 
 }

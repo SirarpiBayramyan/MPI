@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct SeeEventView: View {
-    
+
     @ObservedObject var viewModel: CreateNewEventViewModel
     @Binding private var showDelete: Bool
-    @EnvironmentObject var tabState: TabState 
+    @EnvironmentObject var tabState: TabState
     @Environment(\.dismiss) var dismiss
+    @State private var countdown = ""
+
 
 
     init(viewModel: CreateNewEventViewModel, showDelete: Binding<Bool> = .constant(false)) {
@@ -22,26 +24,39 @@ struct SeeEventView: View {
 
     var body: some View {
         VStack(spacing: 16){
-            HStack {
-                Text(viewModel.name)
-                    .font(.title)
-                    .bold()
-                Spacer()
-            }
 
             ZStack {
                 Circle()
                     .fill(.blue)
                     .opacity(0.35)
+                    .frame(maxWidth: 200)
                 Text(viewModel.emojy)
                     .font(.system(size: 100))
             }
 
-            HStack {
-              Text("Style: \(viewModel.emojy)")
-                Spacer()
-            }
+            Text(viewModel.name)
+                .font(.headline)
+
+            Text("Date: \(viewModel.date.formatted(date: .abbreviated, time: .shortened))")
             Divider()
+            ZStack {
+                Rectangle()
+                    .fill(.blue)
+                    .opacity(0.35)
+                    .cornerRadius(30)
+                    .frame(height: 100)
+
+                HStack {
+                    Text("Time Remaining:")
+                        .font(.headline)
+                    Spacer()
+                    Text(countdown)
+                        .font(.body)
+                        .bold()
+                }
+                .padding()
+
+            }
 
 
             HStack {
@@ -50,7 +65,7 @@ struct SeeEventView: View {
             }
 
             Spacer()
-            
+
             if showDelete {
                 Button(action: {
                     print("Delete")
@@ -75,12 +90,27 @@ struct SeeEventView: View {
             }, label: {
                 Text("Done")
             })
-
         }
         .padding()
+        .onAppear {
+            updateCountdown()
+            startCountdownTimer()
+
+        }
+    }
+
+    private func updateCountdown() {
+        countdown = viewModel.timeRemaining()
+
+    }
+
+    private func startCountdownTimer() {
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            updateCountdown()
+        }
     }
 }
 
 #Preview {
-    SeeEventView(viewModel: CreateNewEventViewModel())
+    SeeEventView(viewModel: CreateNewEventViewModel(event: Event(name: "Wedding", emojy: "🌸", date: Date()+3000, notes: "happy")))
 }

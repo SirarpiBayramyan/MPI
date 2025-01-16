@@ -50,21 +50,21 @@ struct EventsView: View {
     private var listContent: some View {
         NavigationView {
             List {
-                ForEach($viewModel.events, id: \.self) { event in
-                    VStack(alignment: .leading) {
-                        Text(event.name.wrappedValue + event.emojy.wrappedValue)
-                            .font(.headline)
-                        Text("date: \(event.date.wrappedValue)")
-                            .font(.caption)
-                    }
-                    .onTapGesture {
-                        print("eventScreen")
+                ForEach($viewModel.events, id: \.self) { $event in
+                    NavigationLink(destination: SeeEventView(viewModel: CreateNewEventViewModel(), showDelete: .constant(true))) {
+                        VStack(alignment: .leading) {
+                            Text(event.name + " " + event.emojy)
+                                .font(.headline)
+                            Text("Date: \(event.date.formatted(date: .abbreviated, time: .shortened))")
+                                .font(.caption)
+                        }
                     }
                 }
             }
             .navigationTitle("Events")
         }
     }
+
 }
 
 #Preview {

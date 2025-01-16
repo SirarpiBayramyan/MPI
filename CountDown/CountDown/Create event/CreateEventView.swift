@@ -50,7 +50,9 @@ struct CreateEventView: View {
                 }
 
                 HStack {
-                    DatePicker("Event Date", selection: $viewModel.date)
+                    DatePicker("Event Date", selection: $viewModel.date, displayedComponents: [.date, .hourAndMinute])
+                      //  .datePickerStyle(GraphicalDatePickerStyle())
+
                 }
 
                 Spacer()
@@ -76,6 +78,7 @@ struct CreateEventView: View {
 // TODO: Add notes
                 Spacer()
             }
+            .hideKeyboardOnTap()
             .padding()
             .navigationDestination(isPresented: $navigateToSeeEvents) {
                 SeeEventView(viewModel: viewModel)
@@ -88,6 +91,18 @@ struct CreateEventView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+    }
+}
+
+import SwiftUI
+
+extension View {
+    func hideKeyboardOnTap() -> some View {
+        self.gesture(
+            TapGesture().onEnded {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
+        )
     }
 }
 
