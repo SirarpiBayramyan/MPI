@@ -14,8 +14,9 @@ class CreateNewEventViewModel: ObservableObject {
     @Published var emojy: String = "🎁"
     @Published var date: Date = Date()
     @Published var notes: String = "descr"
-    
-    
+
+
+    private var cache = UserDefaultsEventStorageService()
     private var calendarServie = CalendarEventService()
     
     init() {
@@ -38,8 +39,11 @@ class CreateNewEventViewModel: ObservableObject {
     
     func saveEvent(alertMessage: Binding<String>, showAlert: Binding<Bool>) {
         let event = Event(name: name, emojy: emojy, date: date, notes: notes)
-        
         calendarServie.checkCalendarAccess(add: event, alertMessage: alertMessage, showAlert: showAlert)
+        var events = cache.fetchEvents()
+        events.append(event)
+        cache.saveEvents(events)
+
     }
     
     
@@ -59,5 +63,15 @@ class CreateNewEventViewModel: ObservableObject {
         return "\(days)d \(hours)h \(minutes)m \(seconds)s"
     }
     
-    
+    func deleteEvent() {
+        var events = cache.fetchEvents()
+        let event = Event(name: name, emojy: emojy, date: date, notes: notes)
+        for i in 0..<events.count {
+            if events[i] == event {
+                events.remove(at: i)
+                cache.saveEvents(events)
+            }
+        }
+    }
+
 }

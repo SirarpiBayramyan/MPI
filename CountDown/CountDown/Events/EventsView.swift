@@ -14,11 +14,17 @@ struct EventsView: View {
 
 
     var body: some View {
-        if viewModel.events.isEmpty {
-            emptyContent
-        } else {
-            listContent
+        Group {
+            if viewModel.events.isEmpty {
+                emptyContent
+            } else {
+                listContent
+            }
         }
+        .onChange(of: tabState.selectedTab) { newValue in
+            viewModel.FetchEvents()
+        }
+
     }
 
     @ViewBuilder

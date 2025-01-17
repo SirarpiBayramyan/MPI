@@ -71,6 +71,7 @@ struct SeeEventView: View {
                     print("Delete")
                     dismiss()
                     tabState.selectedTab = 0
+                    viewModel.deleteEvent()
                 }, label: {
                     Text("Delete")
                         .font(.headline)

@@ -62,9 +62,8 @@ struct CreateEventView: View {
                     //if alertMessage == "Event created successfully!" {
                         DispatchQueue.main.async {
                             navigateToSeeEvents = true // Navigate to SeeEventView
-
-                        }
-
+                      //  }
+                    }
                 }, label: {
                     Text("Save")
                         .font(.headline)

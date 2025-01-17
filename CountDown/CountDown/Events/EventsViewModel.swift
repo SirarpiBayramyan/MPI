@@ -15,16 +15,11 @@ class EventsViewModel: ObservableObject {
     var service = UserDefaultsEventStorageService()
     init() {
         let event = Event(name: "bb", emojy: "love", date: .now, notes: "vvv")
-        self.events = [event] //service.fetch
-
+       FetchEvents()
     }
 
-    func onAppear() {
-        service.fetchEvents()
-
+    func FetchEvents() {
+      events = service.fetchEvents()
     }
-
-
-
 
 }
