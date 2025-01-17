@@ -36,9 +36,8 @@ struct CalendarEventService {
                     DispatchQueue.main.async {
                         if granted {
                             alertMessage.wrappedValue = "Access granted to your calendar!"
-                            DispatchQueue.main.async {
                                 createEvent(eventt: event)
-                            }
+
                         } else {
                             alertMessage.wrappedValue = "Access denied. Please enable calendar access in Settings."
                         }

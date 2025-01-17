@@ -12,9 +12,9 @@ class EventsViewModel: ObservableObject {
     @Published var events: [Event] = []
     
 
-    var service = UserDefaultsEventStorageService()
+    var service =  UserDefaultsEventStorageService.shared
     init() {
-        let event = Event(name: "bb", emojy: "love", date: .now, notes: "vvv")
+        let event = Event(name: "bb", emoji: "love", date: .now, notes: "vvv")
        FetchEvents()
     }
 

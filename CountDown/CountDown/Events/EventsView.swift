@@ -57,9 +57,9 @@ struct EventsView: View {
         NavigationView {
             List {
                 ForEach($viewModel.events, id: \.self) { $event in
-                    NavigationLink(destination: SeeEventView(viewModel: CreateNewEventViewModel(), showDelete: .constant(true))) {
+                    NavigationLink(destination: SeeEventView(viewModel: EventViewModel(event: event), showDelete: .constant(true))) {
                         VStack(alignment: .leading) {
-                            Text(event.name + " " + event.emojy)
+                            Text(event.name + " " + event.emoji)
                                 .font(.headline)
                             Text("Date: \(event.date.formatted(date: .abbreviated, time: .shortened))")
                                 .font(.caption)

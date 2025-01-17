@@ -29,7 +29,7 @@ struct CreateEventView: View {
                     Circle()
                         .fill(.blue)
                         .opacity(0.35)
-                    Text(viewModel.emojy)
+                    Text(viewModel.emoji)
                         .font(.system(size: 100))
                 }
 
@@ -44,14 +44,13 @@ struct CreateEventView: View {
                 HStack {
                     Text("Emoji :")
                     Spacer()
-                    TextField(viewModel.emojy, text: $viewModel.emojy)
+                    TextField(viewModel.emoji, text: $viewModel.emoji)
                         .padding(.horizontal)
                         .textFieldStyle(.roundedBorder)
                 }
 
                 HStack {
                     DatePicker("Event Date", selection: $viewModel.date, displayedComponents: [.date, .hourAndMinute])
-                      //  .datePickerStyle(GraphicalDatePickerStyle())
 
                 }
 
@@ -59,10 +58,10 @@ struct CreateEventView: View {
 
                 Button(action: {
                     viewModel.saveEvent(alertMessage: $alertMessage, showAlert: $showAlert)
-                    //if alertMessage == "Event created successfully!" {
+                        // if alertMessage == "Event created successfully!" {
                         DispatchQueue.main.async {
                             navigateToSeeEvents = true // Navigate to SeeEventView
-                      //  }
+                       // }
                     }
                 }, label: {
                     Text("Save")
@@ -80,7 +79,8 @@ struct CreateEventView: View {
             .hideKeyboardOnTap()
             .padding()
             .navigationDestination(isPresented: $navigateToSeeEvents) {
-                SeeEventView(viewModel: viewModel)
+                SeeEventView(viewModel: EventViewModel(event: Event(name: viewModel.name, emoji: viewModel.emoji, date: viewModel.date, notes: viewModel.notes)), showDelete: .constant(false))
+
             }
         }
         .alert(isPresented: $showAlert) {

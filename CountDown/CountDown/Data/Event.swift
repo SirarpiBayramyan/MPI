@@ -10,19 +10,19 @@ import Foundation
 struct Event: Hashable, Codable {
     var id = UUID()
     var name: String
-    var emojy: String
+    var emoji: String
     var date: Date
     var notes: String
 }
 
-protocol EventStorageService {
-    func saveEvents(_ events: [Event])
-    func fetchEvents() -> [Event]
-}
+//protocol EventStorageService {
+//    func saveEvents(_ events: [Event])
+//    func fetchEvents() -> [Event]
+//
+//}
 
-import Foundation
-
-class UserDefaultsEventStorageService: EventStorageService {
+class UserDefaultsEventStorageService {
+    static let shared = UserDefaultsEventStorageService()
     private let userDefaultsKey = "savedEvents"
 
     func saveEvents(_ events: [Event]) {
@@ -38,5 +38,10 @@ class UserDefaultsEventStorageService: EventStorageService {
         }
         return []
     }
-}
 
+    func delete(event: Event) {
+        var events = fetchEvents()
+        events.removeAll { $0.id == event.id } // Remove the event by matching its ID
+        saveEvents(events) // Save the updated list
+    }
+}
