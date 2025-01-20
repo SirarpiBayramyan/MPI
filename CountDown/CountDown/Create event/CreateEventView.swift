@@ -4,16 +4,14 @@
 //
 //  Created by Sirarpi Bayramyan on 16.01.25.
 //
-
 import SwiftUI
 
 struct CreateEventView: View {
-    @EnvironmentObject var tabState: TabState 
+    @EnvironmentObject var tabState: TabState
     @State private var showAlert = false
     @State private var alertMessage = ""
     @ObservedObject private var viewModel = CreateNewEventViewModel()
     @State private var navigateToSeeEvents = false // State for navigation
-
 
     var body: some View {
         NavigationStack {
@@ -51,37 +49,35 @@ struct CreateEventView: View {
 
                 HStack {
                     DatePicker("Event Date", selection: $viewModel.date, displayedComponents: [.date, .hourAndMinute])
-
                 }
 
                 Spacer()
 
                 Button(action: {
                     viewModel.saveEvent(alertMessage: $alertMessage, showAlert: $showAlert)
-                        // if alertMessage == "Event created successfully!" {
-                        DispatchQueue.main.async {
-                            navigateToSeeEvents = true // Navigate to SeeEventView
-                       // }
+                    DispatchQueue.main.async {
+                    //if alertMessage == "You already have calendar access." {
+                    navigateToSeeEvents = true // Navigate to SeeEventView
                     }
+                    // }
                 }, label: {
                     Text("Save")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue)
+                        .background(viewModel.isSaveDisabled ? Color.gray : Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(12)
                 })
                 .disabled(viewModel.isSaveDisabled)
-// TODO: Add notes
+
                 Spacer()
+            }
+            .navigationDestination(isPresented: $navigateToSeeEvents) {
+                SeeEventView(viewModel: EventViewModel(event: Event(name: viewModel.name, emoji: viewModel.emoji, date: viewModel.date, notes: viewModel.notes)), showDelete: .constant(false))
             }
             .hideKeyboardOnTap()
             .padding()
-            .navigationDestination(isPresented: $navigateToSeeEvents) {
-                SeeEventView(viewModel: EventViewModel(event: Event(name: viewModel.name, emoji: viewModel.emoji, date: viewModel.date, notes: viewModel.notes)), showDelete: .constant(false))
-
-            }
         }
         .alert(isPresented: $showAlert) {
             Alert(
@@ -92,6 +88,12 @@ struct CreateEventView: View {
         }
     }
 }
+
+#Preview {
+    CreateEventView()
+        .environmentObject(TabState()) // Inject required environment object
+}
+
 
 import SwiftUI
 

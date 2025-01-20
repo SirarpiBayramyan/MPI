@@ -1,5 +1,5 @@
 //
-//  SeeEventView.swift
+//  emoji.swift
 //  CountDown
 //
 //  Created by Sirarpi Bayramyan on 16.01.25.
