@@ -1,96 +1,40 @@
-// Implement a vehicle tracking system that:
-// 1. Efficiently updates vehicle positions on map
-// 2. Handles rapid position updates (100ms intervals during navigation)
-// 3. Smoothly animates transitions between positions
-// 4. Minimizes memory/cpu usage with hundreds of vehicles
+func verify(s: String) -> Int {
+    var stack = [Character]()
+
+    for char in s {
+        switch char {
+        case "(", "[", "<":
+            stack.append(char)
+        case ")":
+            if stack.popLast() != "(" { return 0 }
+        case "]":
+            if stack.popLast() != "[" { return 0 }
+        case ">":
+            if stack.popLast() != "<" { return 0 }
+        default:
+            continue
+        }
+    }
+
+    return stack.isEmpty ? 1 : 0
+}
+print(verify(s: "---(++++)----")) // 1
+print(verify(s: "")) // 1
+print(verify(s: "before ( middle []) after ")) // 1
+print(verify(s: ") (")) // 0
+print(verify(s: "<(   >)")) // 0
+print(verify(s: "(  [  <>  ()  ]  <>  )")) // 1
+print(verify(s: "   (      [)")) // 0
+
 import Foundation
-import CoreGraphics
 
-struct VehiclePosition {
-    let id: String
-    let coordinate: CGPoint
-}
-
-protocol VehicleTrackerDelegate: AnyObject {
-    func didUpdateVehiclePositions(_ positions: [VehiclePosition])
-}
-
-class VehicleTracker {
-    weak var delegate: VehicleTrackerDelegate?
-
-    private var currentPositions: [String: CGPoint] = [:]
-    private var updateQueue = DispatchQueue(label: "vehicle.tracker.queue", qos: .userInteractive)
-    private var pendingUpdateBuffer: [String: CGPoint] = [:]
-    private var updateTimer: Timer?
-
-    private let updateInterval: TimeInterval = 0.1
-
-    init() {
-        startUpdateLoop()
-    }
-
-    deinit {
-        updateTimer?.invalidate()
-    }
-
-    /// Public: receive new raw positions every ~100ms
-    func receivePositionUpdates(_ updates: [VehiclePosition]) {
-        updateQueue.async {
-            for update in updates {
-                self.pendingUpdateBuffer[update.id] = update.coordinate
-            }
-        }
-    }
-
-    /// Internal: apply updates on schedule
-    private func startUpdateLoop() {
-        updateTimer = Timer.scheduledTimer(withTimeInterval: updateInterval, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            self.flushUpdates()
-        }
-    }
-
-    private func flushUpdates() {
-        updateQueue.async {
-            guard !self.pendingUpdateBuffer.isEmpty else { return }
-
-            let updates = self.pendingUpdateBuffer
-            self.pendingUpdateBuffer.removeAll()
-
-            for (id, target) in updates {
-                self.currentPositions[id] = target
-            }
-
-            let updatedPositions = updates.map { VehiclePosition(id: $0.key, coordinate: $0.value) }
-
-            DispatchQueue.main.async {
-                self.delegate?.didUpdateVehiclePositions(updatedPositions)
-            }
-        }
-    }
-}
-
-import UIKit
-
-class AnalyticsTracker {
-
-}
-
-class DetailViewController: UIViewController {
-    private var analytics = AnalyticsTracker()
-
-    func fetchData(_ completion: @escaping (Data) -> Void) {
-
-    }
-    func reader(_ data: Data) {
-        
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        fetchData { [weak self] data in
-            self?.render(data)
-            self?.analytics.track("DataLoaded") // Leak!
-        }
-    }
+// This function returns the last index of either a or b in the string s, or -1 if:
+func challenge(s: String, a: String, b: String) -> Int {
+    guard !s.isEmpty else { return -1 }
+    let aIndex = s.lastIndex(of: Character(a))?.utf16Offset(in: s) ?? -1
+    let bIndex = s.lastIndex(of: Character(b))?.utf16Offset(in: s) ?? -1
+    if aIndex == -1 && bIndex == -1 { return -1 }
+    if aIndex == -1 { return bIndex }
+    if bIndex == -1 { return aIndex }
+    return max(aIndex, bIndex)
 }
