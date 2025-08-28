@@ -1,5 +1,3 @@
-
-////  NewsReaderTests.swift
 //  NewsReaderTests
 //
 //  Created by Sirarpi Bayramyan on 15.05.25.

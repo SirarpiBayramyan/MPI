@@ -18,6 +18,7 @@ class NewsViewModel: ObservableObject {
         self.service = service
     }
 
+    @MainActor
     func loadNews() async {
         isLoading = true
         errorMessage = nil

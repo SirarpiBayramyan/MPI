@@ -19,11 +19,9 @@ enum NewsServiceError: Error {
 
 class NewsReadingManager: NewsServiceProtocol {
 
-    private let key = "e701e38ca69e45a78cc0b48a2191a223"
-
     func fetchNewsData() async throws -> [Article] {
 
-        let urlString = "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=\(key)"
+        let urlString = "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=e701e38ca69e45a78cc0b48a2191a223"
 
         guard let url = URL(string: urlString) else {
             throw NewsServiceError.invalidURL
